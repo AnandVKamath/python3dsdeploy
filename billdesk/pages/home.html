@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Build 3DS Jar</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<style>
+
+</style>
+</head>
+<body style="background-color:#5471dc;" >
+<font color="white">
+  <table>
+      	<tr>
+        <th width="85%" >&ensp;&ensp;&ensp;<b> Build 3DS and Components </b></th>
+	</tr>
+  </table><br>
+
+  <table >
+    <tr>
+       <form action="clone">
+           <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="35" name="repo" value="git@gitlab.hatio.in:Rehna/three-ds-server-2.0.git"></td>
+           <td> Branch </td> <td><input type="text" name="branch" value="preq_pres_flow"></td>
+            <tr></tr>
+           <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="35" name="repo2" value="git@gitlab.hatio.in:Rehna/preparatory_info_server.git"></td>
+           <td> Branch </td><td> <input type="text" name="branch2" value="card_range_interval_tree">
+           <input type="submit" value="Build Jar">&ensp;{{jarstatus}}</td>
+        </form>
+    </tr>
+  </table><br>
+
+<br>
+	&ensp;&ensp;<b>Clear Components</b>
+    <table border="1">
+      	<tr>
+			<td width="5%">
+				<form action="cleardb">
+			    		<input type="submit" value="Clear 3DS DB" style="height: 40px; width: 125px">
+				</form>
+			</td>
+			<td width="10%">{{cleardb3ds}}</td>
+
+			<td width="5%">
+				<form action="clearprepdb">
+					<input type="submit" value="Clear Preparatory DB" style="height: 40px; width: 170px">
+				</form>
+			</td>
+				<td width="10%">{{cleardbprep}}</td>
+
+			<td width="5%">
+				<form action="clearredis">
+		    			<input type="submit" value="Clear Redis" style="height: 40px; width: 125px">
+				</form>
+			</td>
+			<td width="10%">{{cleardbredis}}</td>
+
+			<td width="15%">
+				<form action="updateconfig">
+		    			<input type="submit" value="Update Config" style="height: 40px; width: 125px">
+				</form>
+			</td>
+
+	</tr>
+   </table>
+
+<br>
+	&ensp;&ensp;<b>Deploy</b><br>
+	<table>
+	<tr>
+	<td width="15%"><b>&emsp;ThreeDS</b></td>
+	<td width="25%"></td>
+	<td width="10%"><b>&emsp;Preparatory Server</b>	</td>
+	<td width="25%"></td>
+	</tr>
+
+	<tr>
+	<td width="15%">
+		<form action="deployapp">
+		      &ensp; <input type="submit" value="Deploy " style="height: 40px; width: 150px" >
+		</form>
+	</td>
+	<td width="25%">&ensp;{{deployapp}}</td>
+	<td width="10%">
+		<form action="deploypreparatoryapp">
+		      &ensp; <input type="submit" value="Deploy " style="height: 40px; width: 150px" >
+		</form>
+	</td>
+	<td width="25%">&ensp;{{deployprep}}</td>
+	</tr>
+
+	<tr>
+	<td width="15%" >
+		<form action="stopservicesthreedsapp">
+		      &ensp; <input type="submit" value="Stop Service" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">&ensp;{{stop3ds}}</td>
+
+	<td width="10%">
+		<form action="stopservicespreparatorapp">
+		      &ensp; <input type="submit" value="Stop Service" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">&ensp;{{stopprep}}</td>
+	</tr>
+
+	<tr>
+	<td width="15%" >
+		<form action="startservicesthreedsapp">
+		      &ensp; <input type="submit" value="Start Service" style="height: 40px; width: 150px" >
+		</form>
+	</td>
+	<td width="25%">&ensp;{{status3ds}}</td>
+
+	<td  width="10%">
+		<form action="startservicespreparatorapp">
+		      &ensp; <input type="submit" value="Start Service" style="height: 40px; width: 150px" >
+		</form>
+	</td>
+	<td width="25%">&ensp;{{statusprep}}</td>
+	</tr>
+
+	<tr>
+	<td width="15%">
+		<form action="servicestatusthreedsapp">
+		      &ensp; <input type="submit" value="Service Status" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">&ensp;{{output3ds}}</td>
+	<td width="10%" >
+		<form action="servicesstatuspreparatorapp">
+		      &ensp; <input type="submit" value="Service Status" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">&ensp;{{outputprep}}</td>
+	</tr>
+
+		<tr>
+	<td width="15%">
+		<form action="refreshconfigapp">
+		      &ensp; <input type="submit" value="Refresh Config" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">&ensp;{{outputconfig3ds}}</td>
+	<td width="10%" >
+		<form action="refreshconfigpreparatorapp">
+		      &ensp; <input type="submit" value="Refresh Config" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">&ensp;{{outputconfigprep}}</td>
+	</tr>
+
+
+	<tr>
+	<td width="15%">
+		<form action="healthcheckapp">
+		      &ensp; <input type="submit" value="Health Check" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">{{outputhealth3ds}}</td>
+	<td width="10%" >
+		<form action="healthcheckpreparatorapp">
+		      &ensp; <input type="submit" value="Health Check" style="height: 40px; width: 150px">
+		</form>
+	</td>
+	<td width="25%">&ensp;{{outputhealthprep}}</td>
+	</tr>
+
+ 	<tr >
+	<td width="10%">
+			<form action="loadthreedsapp">
+			      &ensp; <input type="submit" value="Server Load" style="height: 40px; width: 150px">
+			</form>
+	</td>
+	<td width="25%">&ensp;{{outputapp}}</td>
+
+	<td width="10%">
+			<form action="loadpreparatorapp">
+		   	   &ensp; <input type="submit" value="Server Load" style="height: 40px; width: 150px">
+			</form>
+	</td>
+	<td width="25%">&ensp; {{output}}</td>
+	</tr>
+    </table>
+
+	<br><br>
+	&emsp;<b>Last Deployment Details</b>
+	<br>
+		<table  border="1" bordercolor="white">
+			<tr><td width="10%">   </td> <td width="40%" align="center">ThreeDS</td>	        <td width="10%"> </td> <td width="40%" align="center">Preparatory Server</td></tr>
+			<tr><td width="10%"> Git Url&ensp; </td> <td width="40%" >&ensp;{{git_url}}</td>	        <td width="10%">Git Url &ensp;</td> <td width="40%" >&ensp;{{git_urlp}}</td></tr>
+			<tr><td width="10%"> Git Branch&ensp; </td> <td width="40%" >&ensp; {{git_branch}}</td>	<td width="10%">Git Branch&ensp; </td> <td width="40%" >&ensp;{{git_branchp}}</td></tr>
+			<tr><td width="10%"> Last Deployed&ensp; </td> <td width="40%" > &ensp;{{time}}</td>	<td width="10%">Last Deployed &ensp;</td> <td width="40%" > &ensp; {{timep}}</td></tr>
+			<tr><td width="10%"> Commit ID &ensp;</td> <td width="40%" > &ensp;{{commit}}</td>	<td width="10%">Commit ID&ensp; </td> <td width="40%" >&ensp;{{commitp}}</td></tr>
+			<tr><td width="10%"> Author&ensp; </td> <td width="40%" > &ensp;{{author}}</td>		<td width="10%">Author&ensp; </td> <td width="40%" > &ensp; {{authorp}}	  </td></tr>
+		</table>
+</font>
+ </body>
+</html>
