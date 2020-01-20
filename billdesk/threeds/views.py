@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
 
-
 def home(request):
     import mysql.connector
     my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
@@ -66,13 +65,21 @@ def clone(request):
     return render(request, 'home.html', {'jarstatus': jarstatus})
 
 def cleardb(requests):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_DB')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -90,13 +97,21 @@ def cleardb(requests):
         ssh.close()
 
 def clearprepdb(requests):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_DB')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -114,13 +129,21 @@ def clearprepdb(requests):
         ssh.close()
 
 def clearredis(request):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -139,13 +162,21 @@ def updateconfig(request):
     return redirect('http://192.168.1.104:7001/')
 
 def deployapp(requests):
-    import paramiko, os, mysql.connector
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_3DS')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector, os
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_3DS')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -178,13 +209,21 @@ def deployapp(requests):
     return render(requests, 'home.html', {'deployapp': deployapp})
 
 def deploypreparatoryapp(requests):
-    import paramiko, os, mysql.connector
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector, os
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -217,13 +256,21 @@ def deploypreparatoryapp(requests):
     return render(requests, 'home.html', {'deployprep': deployprep})
 
 def stopservicesthreedsapp(requests):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_3DS')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_3DS')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -242,13 +289,21 @@ def stopservicesthreedsapp(requests):
         return render(requests, 'home.html', {'stop3ds': stop3ds})
 
 def stopservicespreparatorapp(requests):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -266,15 +321,22 @@ def stopservicespreparatorapp(requests):
         stopprep = 'Error in Stopping Preparatory Services'
         return render(requests, 'home.html', {'stopprep': stopprep})
 
-
 def startservicesthreedsapp(requests):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_3DS')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector, os
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_3DS')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -293,13 +355,21 @@ def startservicesthreedsapp(requests):
         ssh.close()
 
 def startservicespreparatorapp(requests):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -317,13 +387,21 @@ def startservicespreparatorapp(requests):
         ssh.close()
 
 def servicestatusthreedsapp(request):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_3DS')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_3DS')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -337,13 +415,21 @@ def servicestatusthreedsapp(request):
     ssh.close()
 
 def servicesstatuspreparatorapp(request):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -357,13 +443,21 @@ def servicesstatuspreparatorapp(request):
     ssh.close()
 
 def refreshconfigapp(request):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_3DS')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_3DS')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -381,13 +475,21 @@ def refreshconfigapp(request):
     return render(request, 'home.html', {'outputconfig3ds': outputconfig3ds})
 
 def refreshconfigpreparatorapp(request):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -404,13 +506,21 @@ def refreshconfigpreparatorapp(request):
     return render(request, 'home.html', {'outputconfigprep': outputconfigprep})
 
 def healthcheckapp(request):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_3DS')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_3DS')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -426,13 +536,21 @@ def healthcheckapp(request):
     return render(request, 'home.html', {'outputhealth3ds': outputhealth3ds})
 
 def healthcheckpreparatorapp(request):
-    import paramiko, os
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -448,13 +566,22 @@ def healthcheckpreparatorapp(request):
     return render(request, 'home.html', {'outputhealthprep': outputhealthprep})
 
 def loadthreedsapp(request):
-    import paramiko, os, time
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_3DS')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector, time
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_3DS')
+    print(hostip)
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -471,13 +598,21 @@ def loadthreedsapp(request):
     ssh.close()
 
 def loadpreparatorapp(request):
-    import paramiko, os, time
-    from dotenv import load_dotenv
-    dotenv_path = '/home/anand/Documents/Scripts/Python/.envssh'
-    load_dotenv(dotenv_path)
-    hostip = os.getenv('HOSTIP_PREPARATORY')
-    user = os.getenv('USERSSH')
-    password = os.getenv('PASSWORD')
+    import paramiko, mysql.connector, time
+    from configparser import ConfigParser
+    configur = ConfigParser()
+    configur.read('/home/anand/ENV/config.ini')
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        envs = (row[1])
+    print(envs)
+    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    user = configur.get(envs, 'USERSSH')
+    password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
@@ -492,3 +627,15 @@ def loadpreparatorapp(request):
         timer += 1
         time.sleep(30)
     ssh.close()
+
+def setdata(request):
+    import mysql.connector
+    filename = request.GET.get('filename')
+    print(filename)
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    insert_data = "insert into deployapp (env) value ( %s ) "
+    recordTuple = (filename,)
+    mycursor.execute(insert_data, recordTuple)
+    my_db.commit()
+    return redirect('http://192.168.1.104:7000/')

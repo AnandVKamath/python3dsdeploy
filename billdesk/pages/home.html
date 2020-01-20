@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Build 3DS Jar</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Build 3DS Jar and Deploy </title>
+
 	<style>
 
 </style>
@@ -14,24 +14,35 @@
       	<tr>
         <th width="85%" >&ensp;&ensp;&ensp;<b> Build 3DS and Components </b></th>
 	</tr>
-  </table><br>
+  </table>
 
-  <table >
+  <table cellpadding = "5" cellspacing = "5">
     <tr>
        <form action="clone">
-           <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="35" name="repo" value="git@gitlab.hatio.in:Rehna/three-ds-server-2.0.git"></td>
+           <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="45" name="repo" value="git@gitlab.hatio.in:Rehna/three-ds-server-2.0.git"></td>
            <td> Branch </td> <td><input type="text" name="branch" value="preq_pres_flow"></td>
+
+		   <td width="15%" align="center">&ensp;&ensp;&ensp;&ensp;&ensp;<b>Environment</b></td>
             <tr></tr>
-           <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="35" name="repo2" value="git@gitlab.hatio.in:Rehna/preparatory_info_server.git"></td>
-           <td> Branch </td><td> <input type="text" name="branch2" value="card_range_interval_tree">
+            <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="45" name="repo2" value="git@gitlab.hatio.in:Rehna/preparatory_info_server.git"></td>
+        	<td> Branch </td><td> <input type="text" name="branch2" value="card_range_interval_tree">
            <input type="submit" value="Build Jar">&ensp;{{jarstatus}}</td>
         </form>
+
+	  		<td width="15%" align="center">
+				<form action="setdata">
+                                <select name="filename">
+                                    <option value="aws"> AWS</option>
+                                    <option value="local">Local</option>
+                                </select>
+	  		<td><input type="submit" value="Select"></td>
+		        </form>
+			</td>
     </tr>
   </table><br>
 
-<br>
 	&ensp;&ensp;<b>Clear Components</b>
-    <table border="1">
+    <table cellpadding = "5" cellspacing = "5" >
       	<tr>
 			<td width="5%">
 				<form action="cleardb">
@@ -42,7 +53,7 @@
 
 			<td width="5%">
 				<form action="clearprepdb">
-					<input type="submit" value="Clear Preparatory DB" style="height: 40px; width: 170px">
+					<input type="submit" value="Clear Preparatory DB" style="height: 40px; width: 178px">
 				</form>
 			</td>
 				<td width="10%">{{cleardbprep}}</td>
@@ -63,8 +74,6 @@
 	</tr>
    </table>
 
-<br>
-	&ensp;&ensp;<b>Deploy</b><br>
 	<table>
 	<tr>
 	<td width="15%"><b>&emsp;ThreeDS</b></td>

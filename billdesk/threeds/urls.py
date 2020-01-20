@@ -36,5 +36,6 @@ urlpatterns = [
     path('refreshconfigpreparatorapp', views.refreshconfigpreparatorapp, name='refreshconfigpreparatorapp'),
     path('healthcheckapp', views.healthcheckapp, name='healthcheckapp'),
     path('healthcheckpreparatorapp', views.healthcheckpreparatorapp, name='healthcheckpreparatorapp'),
-    path('updateconfig', views.updateconfig, name='updateconfig')
+    path('updateconfig', views.updateconfig, name='updateconfig'),
+    path('setdata', views.setdata, name='setdata'),
 ]
