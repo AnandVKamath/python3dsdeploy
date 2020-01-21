@@ -11,11 +11,13 @@ def home(request):
     mycursor.execute(select_data)
     records = mycursor.fetchall()
     for row in records:
-        git_url = (row[1])
-        git_branch = (row[2])
+        git_url = (row[1]).strip()
+        git_branch = (row[2]).strip()
         time = (row[3])
         commit = (row[4])
         author = (row[5])
+        server = (row[7])
+    print(server)
     select_data = "select * from deploy.preparatory order by id desc limit 1"
     mycursor.execute(select_data)
     records = mycursor.fetchall()
@@ -25,12 +27,12 @@ def home(request):
         timep = (row[3])
         commitp = (row[4])
         authorp = (row[5])
-    return render(request, 'home.html', {'git_url': git_url, 'git_branch':git_branch, 'git_urlp':git_urlp, 'git_branchp':git_branchp, 'time': time, 'commit':commit, 'author':author, 'timep': timep, 'commitp':commitp, 'authorp':authorp})
+    return render(request, 'home.html', {'git_url': git_url, 'git_branch':git_branch, 'git_urlp':git_urlp, 'git_branchp':git_branchp, 'time': time, 'commit':commit, 'author':author, 'timep': timep, 'commitp':commitp, 'authorp':authorp, 'server':server, 'serverp': server})
 
 def clone(request):
     import os, git, shutil
-    filename = request.GET['repo']
-    branch = request.GET['branch']
+    filename = request.GET['repo'].strip()
+    branch = request.GET['branch'].strip()
     os.chdir('/tmp/projects/')
     if os.path.isdir('/tmp/projects/three-ds-server-2.0'):
         shutil.rmtree('/tmp/projects/three-ds-server-2.0')
@@ -45,13 +47,34 @@ def clone(request):
         os.system('cp /home/anand/Documents/JKS/threeDSServer.jks /tmp/projects/three-ds-server-2.0/src/main/resources/threeDSServer.jks')
         os.system('mvn package -DskipTests')
         print('Build of Three-Ds-Server jar file Complete')
-    filename2 = request.GET['repo2']
-    branch2 = request.GET['branch2']
+    else:
+        git.Git("/tmp/projects/").clone(filename)
+        os.chdir('/tmp/projects/three-ds-server-2.0/')
+        os.system('/usr/bin/git fetch')
+        fetch = '/usr/bin/git checkout ' + branch
+        print(fetch)
+        os.system(fetch)
+        os.system('cp /home/anand/Documents/JKS/threeDSServer.jks /tmp/projects/three-ds-server-2.0/src/main/resources/threeDSServer.jks')
+        os.system('mvn package -DskipTests')
+        print('Build of Three-Ds-Server jar file Complete')
+
+    filename2 = request.GET['repo2'].strip()
+    branch2 = request.GET['branch2'].strip()
     os.chdir('/tmp/projects/')
     if os.path.isdir('/tmp/projects/preparatory_info_server'):
         shutil.rmtree('/tmp/projects/preparatory_info_server')
         print(filename2)
         print(branch2)
+        git.Git("/tmp/projects/").clone(filename2)
+        os.chdir('/tmp/projects/preparatory_info_server/')
+        os.system('/usr/bin/git fetch')
+        fetch = '/usr/bin/git checkout ' + branch2
+        print(fetch)
+        os.system(fetch)
+        os.system('cp /home/anand/Documents/JKS/threeDSServer.jks /tmp/projects/preparatory_info_server/src/main/resources/threeDSServer.jks')
+        os.system('mvn package -DskipTests')
+        print('Build of preparatory_info_server jar file Complete')
+    else:
         git.Git("/tmp/projects/").clone(filename2)
         os.chdir('/tmp/projects/preparatory_info_server/')
         os.system('/usr/bin/git fetch')
@@ -77,7 +100,7 @@ def cleardb(requests):
     for row in records:
         envs = (row[1])
     print(envs)
-    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    hostip = configur.get(envs,'HOSTIP_DB')
     user = configur.get(envs, 'USERSSH')
     password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
@@ -109,7 +132,8 @@ def clearprepdb(requests):
     for row in records:
         envs = (row[1])
     print(envs)
-    hostip = configur.get(envs,'HOSTIP_PREPARATORY')
+    hostip = configur.get(envs,'HOSTIP_DB')
+    print(hostip)
     user = configur.get(envs, 'USERSSH')
     password = configur.get(envs, 'PASSWORD')
     ssh = paramiko.SSHClient()
@@ -191,19 +215,29 @@ def deployapp(requests):
     os.chdir(threeds)
     os.system("cat .git/config |grep url |awk '{print $3}' > /tmp/3ds_git_log.txt")
     os.system("git branch |grep '*' |awk '{print $2}' >> /tmp/3ds_git_log.txt")
-    os.system('git log -1 >> /tmp/3ds_git_log.txt')
+    os.system('git log -1  |grep "commit">> /tmp/3ds_git_log.txt')
+    os.system('git log -1  |grep "Author">> /tmp/3ds_git_log.txt')
     f = open('/tmp/3ds_git_log.txt', "r")
     threedsurl = f.readline()
     threedsbranch = f.readline()
     threedscommit = f.readline()
     threedsauthor = f.readline()
-    threedsdate = f.readline()
+    f.close()
     my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
     mycursor = my_db.cursor()
-    mycursor.execute("create table IF NOT EXISTS deploy.3ds (id int NOT NULL AUTO_INCREMENT, git_url varchar(75), git_branch varchar(50), deploytime DATETIME DEFAULT CURRENT_TIMESTAMP, commitid varchar(50), author varchar(100), committime varchar(50), PRIMARY KEY (id))")
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        server = row[1]
+    mycursor.close()
+    print('Server is', server)
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    mycursor.execute("create table IF NOT EXISTS deploy.3ds (id int NOT NULL AUTO_INCREMENT, git_url varchar(75), git_branch varchar(50), deploytime DATETIME DEFAULT CURRENT_TIMESTAMP, commitid varchar(50), author varchar(100), committime varchar(50), server varchar(25), PRIMARY KEY (id))")
     my_db.commit()
-    insert_data = "insert into deploy.3ds (git_url, git_branch, commitid, author, committime) values  ( %s, %s, %s, %s, %s)"
-    recordTuple = (threedsurl.strip(), threedsbranch.strip(), threedscommit[7:].strip(), threedsauthor[8:].strip(), threedsdate[8:].strip())
+    insert_data = "insert into deploy.3ds (git_url, git_branch, commitid, author, server) values  ( %s, %s, %s, %s,  %s)"
+    recordTuple = (threedsurl.strip(), threedsbranch.strip(), threedscommit[7:].strip(), threedsauthor[8:].strip(), server)
     mycursor.execute(insert_data, recordTuple)
     my_db.commit()
     return render(requests, 'home.html', {'deployapp': deployapp})
@@ -238,21 +272,31 @@ def deploypreparatoryapp(requests):
     os.chdir(preparatory)
     os.system("cat .git/config |grep url |awk '{print $3}' > /tmp/preparatory_git_log.txt")
     os.system("git branch |grep '*' |awk '{print $2}' >> /tmp/preparatory_git_log.txt")
-    os.system('git log -1 >> /tmp/preparatory_git_log.txt')
+    os.system('git log -1  |grep "commit" >> /tmp/preparatory_git_log.txt')
+    os.system('git log -1  |grep "Author" >> /tmp/preparatory_git_log.txt')
     f = open('/tmp/preparatory_git_log.txt', "r")
     threedsurl = f.readline()
     threedsbranch = f.readline()
     threedscommit = f.readline()
     threedsauthor = f.readline()
-    threedsdate = f.readline()
     my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
     mycursor = my_db.cursor()
-    mycursor.execute("create table IF NOT EXISTS deploy.preparatory (id int NOT NULL AUTO_INCREMENT, git_url varchar(75), git_branch varchar(50), deploytime DATETIME DEFAULT CURRENT_TIMESTAMP, commitid varchar(50), author varchar(100), committime varchar(50), PRIMARY KEY (id))")
+    select_data = "select * from deploy.deployapp order by id desc limit 1"
+    mycursor.execute(select_data)
+    records = mycursor.fetchall()
+    for row in records:
+        server = row[1]
+    mycursor.close()
+    print('Server is', server)
+    my_db = mysql.connector.connect(host="192.168.1.74", user="root", password="password", database="deploy")
+    mycursor = my_db.cursor()
+    mycursor.execute("create table IF NOT EXISTS deploy.preparatory (id int NOT NULL AUTO_INCREMENT, git_url varchar(75), git_branch varchar(50), deploytime DATETIME DEFAULT CURRENT_TIMESTAMP, commitid varchar(50), author varchar(100), committime varchar(50), server varchar(25), PRIMARY KEY (id))")
     my_db.commit()
-    insert_data = "insert into deploy.preparatory (git_url, git_branch, commitid, author, committime) values  ( %s, %s, %s, %s, %s)"
-    recordTuple = (threedsurl.strip(), threedsbranch.strip(), threedscommit[7:].strip(), threedsauthor[8:].strip(), threedsdate[8:].strip())
+    insert_data = "insert into deploy.preparatory (git_url, git_branch, commitid, author, server) values  ( %s, %s, %s, %s, %s)"
+    recordTuple = (threedsurl.strip(), threedsbranch.strip(), threedscommit[7:].strip(), threedsauthor[8:].strip(), server)
     mycursor.execute(insert_data, recordTuple)
     my_db.commit()
+    mycursor.close()
     return render(requests, 'home.html', {'deployprep': deployprep})
 
 def stopservicesthreedsapp(requests):
@@ -461,11 +505,10 @@ def refreshconfigapp(request):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     ssh.connect(hostip, port=22, username=user, password=password)
-    stdin, stdout, stderr = ssh.exec_command(
-        'curl 127.0.0.1:8000/actuator/refresh -d {} -H "Content-Type: application/json"')
+    stdin, stdout, stderr = ssh.exec_command('curl 127.0.0.1:8000/actuator/refresh -d {} -H "Content-Type: application/json"')
     x = stdout.readlines()
     val = x[0]
-    if len(val) == 2:
+    if val == '[]':
         print('Config Updated', val)
         outputconfig3ds = 'Config Updated'
     else:
@@ -496,7 +539,7 @@ def refreshconfigpreparatorapp(request):
     stdin, stdout, stderr = ssh.exec_command('curl 127.0.0.1:8000/actuator/refresh -d {} -H "Content-Type: application/json"')
     x = stdout.readlines()
     val = x[0]
-    if len(val) == 2:
+    if val == '[]':
         print('Config Updated', val)
         outputconfigprep = 'Config Updated'
     else:

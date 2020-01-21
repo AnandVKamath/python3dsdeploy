@@ -19,13 +19,13 @@
   <table cellpadding = "5" cellspacing = "5">
     <tr>
        <form action="clone">
-           <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="45" name="repo" value="git@gitlab.hatio.in:Rehna/three-ds-server-2.0.git"></td>
-           <td> Branch </td> <td><input type="text" name="branch" value="preq_pres_flow"></td>
+           <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="45" name="repo" value="git@gitlab.hatio.in:emvco/three-ds-server-2.0.git"></td>
+           <td> Branch </td> <td><input type="text" name="branch" value="beta"></td>
 
 		   <td width="15%" align="center">&ensp;&ensp;&ensp;&ensp;&ensp;<b>Environment</b></td>
             <tr></tr>
-            <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="45" name="repo2" value="git@gitlab.hatio.in:Rehna/preparatory_info_server.git"></td>
-        	<td> Branch </td><td> <input type="text" name="branch2" value="card_range_interval_tree">
+            <td width="10%">&ensp;&ensp;Git Repo  </td><td><input type="text" size="45" name="repo2" value="git@gitlab.hatio.in:emvco/preparatory_info_server.git"></td>
+        	<td> Branch </td><td> <input type="text" name="branch2" value="beta">
            <input type="submit" value="Build Jar">&ensp;{{jarstatus}}</td>
         </form>
 
@@ -34,6 +34,7 @@
                                 <select name="filename">
                                     <option value="aws"> AWS</option>
                                     <option value="local">Local</option>
+									<option value="digitalocean">DigitalOcean</option>
                                 </select>
 	  		<td><input type="submit" value="Select"></td>
 		        </form>
@@ -197,11 +198,12 @@
 	<br>
 		<table  border="1" bordercolor="white">
 			<tr><td width="10%">   </td> <td width="40%" align="center">ThreeDS</td>	        <td width="10%"> </td> <td width="40%" align="center">Preparatory Server</td></tr>
-			<tr><td width="10%"> Git Url&ensp; </td> <td width="40%" >&ensp;{{git_url}}</td>	        <td width="10%">Git Url &ensp;</td> <td width="40%" >&ensp;{{git_urlp}}</td></tr>
-			<tr><td width="10%"> Git Branch&ensp; </td> <td width="40%" >&ensp; {{git_branch}}</td>	<td width="10%">Git Branch&ensp; </td> <td width="40%" >&ensp;{{git_branchp}}</td></tr>
-			<tr><td width="10%"> Last Deployed&ensp; </td> <td width="40%" > &ensp;{{time}}</td>	<td width="10%">Last Deployed &ensp;</td> <td width="40%" > &ensp; {{timep}}</td></tr>
-			<tr><td width="10%"> Commit ID &ensp;</td> <td width="40%" > &ensp;{{commit}}</td>	<td width="10%">Commit ID&ensp; </td> <td width="40%" >&ensp;{{commitp}}</td></tr>
-			<tr><td width="10%"> Author&ensp; </td> <td width="40%" > &ensp;{{author}}</td>		<td width="10%">Author&ensp; </td> <td width="40%" > &ensp; {{authorp}}	  </td></tr>
+			<tr><td width="10%"> Git Url&ensp; </td> <td width="40%" >{{git_url}}</td>	        <td width="10%">Git Url &ensp;</td> <td width="40%" >{{git_urlp}}</td></tr>
+			<tr><td width="10%"> Git Branch&ensp; </td> <td width="40%" >{{git_branch}}</td>	<td width="10%">Git Branch&ensp; </td> <td width="40%" >{{git_branchp}}</td></tr>
+			<tr><td width="10%"> Last Deployed&ensp; </td> <td width="40%" >{{time}}</td>	<td width="10%">Last Deployed &ensp;</td> <td width="40%" > {{timep}}</td></tr>
+			<tr><td width="10%"> Commit ID &ensp;</td> <td width="40%" >{{commit}}</td>	<td width="10%">Commit ID&ensp; </td> <td width="40%" >{{commitp}}</td></tr>
+			<tr><td width="10%"> Author&ensp; </td> <td width="40%" >{{author}}</td>		<td width="10%">Author&ensp; </td> <td width="40%" >{{authorp}}	  </td></tr>
+			<tr><td width="10%"> Server&ensp; </td> <td width="40%" >{{server}}</td>		<td width="10%">Server&ensp; </td> <td width="40%" >{{server}}	  </td></tr>
 		</table>
 </font>
  </body>
